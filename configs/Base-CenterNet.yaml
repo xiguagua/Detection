@@ -1,0 +1,24 @@
+MODEL:
+  META_ARCHITECTURE: "CenterNet"
+  BACKBONE:
+    NAME: "build_poseresnet_backbone"
+  POSERESNETS:
+    DEPTH: 18
+    OUT_FEATURES: ["deconv"]
+  CENTERNET:
+    IN_FEATURES: ["deconv"]
+    HM_WEIGHT: 1
+    WH_WEIGHT: 0.1
+    WH_LOSS: "l1"
+    DOWN_RATIO: 4
+# DATASETS:
+#   TRAIN: ("coco_2017_train",)
+#   TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 16
+  BASE_LR: 0.01  # Note that RetinaNet uses a different default learning rate
+  STEPS: (60000, 80000)
+  MAX_ITER: 90000
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800)
+VERSION: 2
