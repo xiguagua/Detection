@@ -26,7 +26,7 @@ class WiderFace(UserDict):
             self.anno[t] = self.work_dir/f'wider_face_split/wider_face_{t}_bbx_gt.txt'
 
     def get_object_dicts(self, typ):
-        assert typ in ('train', 'val'), "Only support 'train' or 'val'"
+        assert typ in ('train', 'val'), "Only 'train' or 'val' is supported"
 
         dataset_dicts = []
         idx = 0
