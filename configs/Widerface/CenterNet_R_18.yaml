@@ -1,0 +1,11 @@
+_BASE_: "../Base-CenterNet.yaml"
+MODEL:
+  BACKBONE:
+    NAME: "build_poseresnet_backbone"
+  POSERESNETS:
+    DEPTH: 18
+    OUT_FEATURES: ["deconv"]
+
+DATASETS:
+  TRAIN: ("widerface_train",)
+  TEST: ("widerface__val",)

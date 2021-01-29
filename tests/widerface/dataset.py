@@ -1,6 +1,6 @@
 import os, json, random
 from pathlib import Path
-from collections import OrderedDict, UserDict
+from collections import UserDict
 
 from detectron2.structures import BoxMode
 from PIL import Image
@@ -10,14 +10,16 @@ from detectron2.data import (
     DatasetCatalog,
 )
 
-category = ['face']
-category_id = dict(zip(category, range(len(category))))
+# category = ['face']
+# category_id = dict(zip(category, range(len(category))))
 
 
 # Prepare Dataset
-class WiderFace(UserDict):
+class WiderFace():
     def __init__(self, work_dir):
         super().__init__()
+        self.category = ['face']
+        self.category_id = dict(zip(self.category, range(len(self.category))))
         self.work_dir = Path(work_dir)
         self.image_dir = {}
         self.anno = {}
@@ -25,7 +27,7 @@ class WiderFace(UserDict):
             self.image_dir[t] = self.work_dir/f'WIDER_{t}/images'
             self.anno[t] = self.work_dir/f'wider_face_split/wider_face_{t}_bbx_gt.txt'
 
-    def get_object_dicts(self, typ):
+    def load_instances(self, typ):
         assert typ in ('train', 'val'), "Only 'train' or 'val' is supported"
 
         dataset_dicts = []
@@ -64,10 +66,14 @@ class WiderFace(UserDict):
 
         return dataset_dicts                                                                            
 
-work_dir = '/content/'
-widerface = WiderFace(work_dir)
 
-for d in ['train', 'val']:
-    DatasetCatalog.register(
-        'widerface_' + d, lambda d=d: widerface.get_object_dicts(d))
-    MetadataCatalog.get('widerface_' + d).set(thing_classes=category)
+
+def register(root):
+    widerface = WiderFace(root) 
+
+    for d in ['train', 'val']:
+        DatasetCatalog.register(
+            'widerface_' + d, lambda d=d: widerface.load_instances(d))
+        MetadataCatalog.get('widerface_' + d).set(thing_classes=widerface.category)
+
+
