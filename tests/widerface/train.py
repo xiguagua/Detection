@@ -4,7 +4,6 @@ from collections import OrderedDict
 
 import torch
 from torch.nn.parallel import DistributedDataParallel
-from detectron2 import model_zoo
 from detectron2.engine import (
     default_setup, 
     default_argument_parser, 
