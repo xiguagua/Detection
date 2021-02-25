@@ -10,6 +10,7 @@ from detectron2.engine import (
     launch,
 )
 from detectron2.config import get_cfg
+from detectron2.config import CfgNode as CN
 from detectron2.solver import build_optimizer, build_lr_scheduler
 from detectron2.checkpoint import DetectionCheckpointer, PeriodicCheckpointer
 from detectron2.utils.events import (
@@ -156,12 +157,30 @@ def do_train(cfg, model, resume=False):
                     writer.write()
             periodic_checkpointer.step(iteration)
 
+def add_centernet_config(cfg):
+    """
+    Add config for VoVNet.
+    """
+    _C = cfg
+
+    _C.MODEL.POSERESNETS = CN()
+    _C.MODEL.CENTERNET = CN()
+
+    _C.MODEL.POSERESNETS.DEPTH = 18
+    _C.MODEL.POSERESNETS.OUT_FEATURES = []
+
+    _C.MODEL.CENTERNET.IN_FEATURES = []
+    _C.MODEL.CENTERNET.HM_WEIGHT = 1
+    _C.MODEL.CENTERNET.WH_WEIGHT = 0.1
+    _C.MODEL.CENTERNET.WH_LOSS = 'l1'
+    _C.MODEL.CENTERNET.DOWN_RATIO = 4
 
 def setup(args):
     """
     Create configs and perform basic setups.
     """
     cfg = get_cfg()
+    add_centernet_config(cfg)
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
     cfg.freeze()
