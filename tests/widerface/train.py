@@ -213,6 +213,12 @@ def main(args):
 
 
 if __name__ == "__main__":
+    import sys
+    abspath = os.path.abspath("../")
+    # print(abspath)
+    sys.path.insert(0, abspath)  
+    import xgdetectron.modeling
+
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     _root = os.getenv("WIDERFACE_DATASETS", "datasets")

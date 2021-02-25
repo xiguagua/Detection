@@ -9,8 +9,8 @@ from detectron2.modeling.backbone.build import build_backbone
 from detectron2.config import configurable
 from detectron2.structures import Boxes, ImageList, Instances, pairwise_iou
 
-from modeling.losses import FocalLoss, RegL1Loss, RegLoss
-from structures.keypoints import draw_umich_gaussian, draw_dense_reg, gaussian_radius
+from xgdetectron.modeling.losses import FocalLoss, RegL1Loss, RegLoss
+from xgdetectron.structures.keypoints import draw_umich_gaussian, draw_dense_reg, gaussian_radius
 
 __all__ = ['CenterNet']
 
