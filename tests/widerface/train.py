@@ -19,9 +19,19 @@ from detectron2.utils.events import (
     EventStorage,
 )
 from detectron2.data import (
+    MetadataCatalog,
     build_detection_train_loader,
     build_detection_test_loader,
 )
+
+from detectron2.evaluation import (
+    COCOEvaluator,
+    COCOPanopticEvaluator,
+    inference_on_dataset,
+    print_csv_format,
+    DatasetEvaluators,
+)
+
 from detectron2.modeling import build_model
 import detectron2.utils.comm as comm
 
@@ -30,6 +40,39 @@ from .dataset import register
 logger = logging.getLogger('widerface')
 
 # os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
+
+
+
+def get_evaluator(cfg, dataset_name, output_folder=None):
+    """
+    Create evaluator(s) for a given dataset.
+    This uses the special metadata "evaluator_type" associated with each builtin dataset.
+    For your own dataset, you can simply create an evaluator manually in your
+    script and do not have to worry about the hacky if-else logic here.
+    """
+    if output_folder is None:
+        output_folder = os.path.join(cfg.OUTPUT_DIR, "inference")
+    evaluator_list = []
+    evaluator_list.append(COCOEvaluator(dataset_name, output_dir=output_folder))
+    # evaluator_type = MetadataCatalog.get(dataset_name).evaluator_type
+    # if evaluator_type in ["sem_seg", "coco_panoptic_seg"]:
+    #     evaluator_list.append(
+    #         SemSegEvaluator(
+    #             dataset_name,
+    #             distributed=True,
+    #             output_dir=output_folder,
+    #         )
+    #     )
+    # if evaluator_type in ["coco", "coco_panoptic_seg"]:
+    #     evaluator_list.append(COCOEvaluator(dataset_name, output_dir=output_folder))
+    if len(evaluator_list) == 0:
+        raise NotImplementedError(
+            "no Evaluator for the dataset {}".format(dataset_name)
+        )
+    if len(evaluator_list) == 1:
+        return evaluator_list[0]
+    return DatasetEvaluators(evaluator_list)
+
 
 def do_test(cfg, model):
     results = OrderedDict()
