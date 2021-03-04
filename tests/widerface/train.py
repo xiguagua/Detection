@@ -159,7 +159,7 @@ def do_train(cfg, model, resume=False):
 
 def add_centernet_config(cfg):
     """
-    Add config for VoVNet.
+    Add config for centernet.
     """
     _C = cfg
 
@@ -174,6 +174,8 @@ def add_centernet_config(cfg):
     _C.MODEL.CENTERNET.WH_WEIGHT = 0.1
     _C.MODEL.CENTERNET.WH_LOSS = 'l1'
     _C.MODEL.CENTERNET.DOWN_RATIO = 4
+    _C.MODEL.CENTERNET.NUM_CLASSES = 80
+
 
 def setup(args):
     """
