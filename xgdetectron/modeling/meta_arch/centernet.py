@@ -103,11 +103,12 @@ class CenterNet(nn.Module):
             in inference, the standard output format, described in :doc:`/tutorials/models`.
         """
         images = self.preprocess_images(batched_inputs)
-        features = self.backbone(images.tensor)
+        img_tensor = images.tensor
+        features = self.backbone(img_tensor)
         features = [features[f] for f in self.head_in_features]
         assert (features[0].shape[-2], features[0].shape[-1]) == \
-            (images.image_sizes[0][0]/self.down_ratio, images.image_sizes[0][1]/self.down_ratio) \
-            , (features[0].shape, images.image_sizes[0])
+            (img_tensor.shape[-2]/self.down_ratio, img_tensor.shape[-1]/self.down_ratio) \
+            , (features[0].shape, img_tensor.shape)
         # pred_hm, pred_wh, pred_hm_reg = self.head(features)
         pred_hm, pred_wh = self.head(features)
 
