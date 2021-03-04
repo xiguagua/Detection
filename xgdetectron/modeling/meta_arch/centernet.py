@@ -107,7 +107,7 @@ class CenterNet(nn.Module):
         features = [features[f] for f in self.head_in_features]
         assert (features[0].shape[-2], features[0].shape[-1]) == \
             (images.image_sizes[0][0]/self.down_ratio, images.image_sizes[0][1]/self.down_ratio) \
-            , (features[0], images.image_sizes[0])
+            , (features[0].shape, images.image_sizes[0])
         # pred_hm, pred_wh, pred_hm_reg = self.head(features)
         pred_hm, pred_wh = self.head(features)
 
