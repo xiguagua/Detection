@@ -175,6 +175,7 @@ def add_centernet_config(cfg):
     _C.MODEL.CENTERNET.WH_LOSS = 'l1'
     _C.MODEL.CENTERNET.DOWN_RATIO = 4
     _C.MODEL.CENTERNET.NUM_CLASSES = 80
+    _C.MODEL.CENTERNET.HEAD_CONV_DIMS = []
 
 
 def setup(args):
