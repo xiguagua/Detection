@@ -217,7 +217,7 @@ if __name__ == "__main__":
     abspath = os.path.abspath("../")
     # print(abspath)
     sys.path.insert(0, abspath)  
-    import xgdetectron.modeling
+    import xgdetectron.modeling as _
 
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
