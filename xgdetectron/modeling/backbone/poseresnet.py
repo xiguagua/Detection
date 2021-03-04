@@ -102,9 +102,10 @@ class Bottleneck(nn.Module):
 
 
 class PoseResNet(Backbone):
-    def __init__(self, block, layers, out_features=None):
+    def __init__(self, block, layers, size_divisibility=0, out_features=None):
         self.inplanes = 64
         self.deconv_with_bias = False
+        self.size_divisibility = size_divisibility
         # self.heads = heads
 
         self._out_feature_strides = {}
@@ -297,11 +298,16 @@ def build_poseresnet_backbone(cfg, input_shape):
     # fmt: off
     depth               = cfg.MODEL.POSERESNETS.DEPTH
     out_features        = cfg.MODEL.POSERESNETS.OUT_FEATURES
+    size_divisibility   = cfg.MODEL.POSERESNETS.SIZE_DIVISIBILITY
 
     # fmt: on
 
     block_class, layers = resnet_spec[depth]
-    model = PoseResNet(block_class, layers, out_features=out_features)
+    model = PoseResNet(
+        block_class, 
+        layers, 
+        size_divisibility=size_divisibility, 
+        out_features=out_features)
     model.init_weights(depth, pretrained=True)
     return model
 
