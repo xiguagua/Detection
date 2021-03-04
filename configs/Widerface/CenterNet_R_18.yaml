@@ -5,6 +5,8 @@ MODEL:
   POSERESNETS:
     DEPTH: 18
     OUT_FEATURES: ["deconv"]
+  CENTERNET:
+    NUM_CLASSES: 1
 
 DATASETS:
   TRAIN: ("widerface_train",)
