@@ -131,7 +131,7 @@ class PoseResNet(Backbone):
 
         self._out_feature_strides[name] = 4
         self._out_feature_channels[name] = 256
-        self._size_divisibility = self._out_feature_strides[name]
+        self._size_divisibility = 32
 
         if out_features is None:
             out_features = [name]
