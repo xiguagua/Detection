@@ -155,6 +155,7 @@ class CenterNet(nn.Module):
         for gt_per_image in gt_instances:
             scale_x = scale_y = 1 / down_ratio
             boxes = gt_per_image.gt_boxes
+            device = boxes.tensor.device
             boxes.scale(scale_x, scale_y) 
             classes = gt_per_image.gt_classes
 
@@ -162,10 +163,10 @@ class CenterNet(nn.Module):
             num_objs = len(boxes)
             radius = gaussian_radius(boxes.tensor)
             cts = boxes.get_centers().type(torch.int32)
-            hm = torch.zeros((self.num_classes, output_h, output_w), dtype=torch.float32)  
-            wh = torch.zeros((max_objs, 2), dtype=torch.float32)
-            ind = torch.zeros((max_objs), dtype=torch.int16)
-            reg_mask = torch.zeros((max_objs), dtype=torch.int8)
+            hm = torch.zeros((self.num_classes, output_h, output_w), device=device, dtype=torch.float32)  
+            wh = torch.zeros((max_objs, 2), device=device, dtype=torch.float32)
+            ind = torch.zeros((max_objs), device=device, dtype=torch.int16)
+            reg_mask = torch.zeros((max_objs), device=device, dtype=torch.int8)
 
             for i in range(num_objs):
                 ct = cts[i]

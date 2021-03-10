@@ -45,7 +45,7 @@ def gaussian2D(shape, sigma=1):
     m, n = [((ss - 1.) / 2.).item() for ss in shape]
     # y, x = np.ogrid[-m:m+1,-n:n+1]
     # y, x = torch.arange(-m, m+1).unsqueeze(1), torch.arange(-n, n+1).unsqueeze(0)
-    y, x = torch.meshgrid(torch.arange(-m, m+1), torch.arange(-n, n+1))
+    y, x = torch.meshgrid(torch.arange(-m, m+1, device=sigma.device), torch.arange(-n, n+1, device=sigma.device))
 
     h = torch.exp(-(x * x + y * y) / (2 * sigma * sigma))
     h[h < torch.finfo(h.dtype).eps * h.max()] = 0
@@ -56,10 +56,9 @@ def draw_umich_gaussian(heatmap, center, radius, k=1):
     diameter = 2 * radius + 1
     gaussian = gaussian2D((diameter, diameter), sigma=diameter / 6)
     
-    x, y = int(center[0]), int(center[1])
-
+    x, y = center[0].int(), center[1].int()
     height, width = heatmap.shape[0:2]
-        
+    radius = radius.int()
     left, right = min(x, radius), min(width - x, radius + 1)
     top, bottom = min(y, radius), min(height - y, radius + 1)
 
