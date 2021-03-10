@@ -4,11 +4,11 @@ import torch
 from detectron2.structures import Boxes
 
 
-def gaussian_radius(boxes: Boxes, min_overlap=0.7) -> torch.Tensor:
+def gaussian_radius(boxes: torch.Tensor, min_overlap=0.7) -> torch.Tensor:
     """[summary]
 
     Args:
-        boxes (Boxes): Nx4 
+        boxes: Nx4 
         min_overlap (float, optional): [description]. Defaults to 0.7.
 
     Returns:

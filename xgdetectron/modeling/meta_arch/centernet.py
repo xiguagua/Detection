@@ -160,7 +160,7 @@ class CenterNet(nn.Module):
 
             # num_objs = min(len(boxes), self.max_objs)
             num_objs = len(boxes)
-            radius = gaussian_radius(boxes)
+            radius = gaussian_radius(boxes.tensor)
             cts = boxes.get_centers().type(torch.int32)
             hm = torch.zeros((self.num_classes, output_h, output_w), dtype=torch.float32)  
             wh = torch.zeros((max_objs, 2), dtype=torch.float32)
